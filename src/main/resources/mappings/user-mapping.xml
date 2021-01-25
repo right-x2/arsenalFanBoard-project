@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="UserDAO">
+
+	<resultMap id="UserList" type="user">
+		<id property = "id" column="ID"/>
+		<result property = "password" column="PASSWORD"/>
+		<result property = "nickName" column="NICKNAME"/>
+		<result property = "userName" column="USERNAME"/>
+		<result property = "email" column="EMAIL"/>
+		<result property = "siginUpDate" column="SIGNUPDATE"/>
+		<result property = "point" column="POINT"/>
+	</resultMap>
+	
+
+	
+	<select id="getUser" resultType="user">
+		<![CDATA[
+		SELECT * FROM users where id =#{id} and password = #{password}
+		]]>
+	</select>
+	
+	<select id="getUserInfo" resultType="user">
+		<![CDATA[
+		SELECT * FROM users where nickName =#{nickName} 
+		]]>
+	</select>
+	
+	<insert id="insertUser">
+		     INSERT INTO USERS(ID,PASSWORD,NICKNAME,USERNAME,EMAIL)
+		     VALUES(#{id},#{password},#{nickName},#{userName},#{email})
+	</insert>
+
+
+	<update id="updateUser" >
+		UPDATE USERS SET ID=#{id},PASSWORD=#{password},NICKNAME = #{nickName} where ID=#{id}
+	</update>
+	
+	<update id="updateUserPoint" >
+		UPDATE USERS SET POINT=(SELECT POINT FROM USERS WHERE ID=#{id})+5 WHERE ID=#{id}
+	</update>
+
+	<delete id="deleteUser" >
+		delete users where id = #{id}
+	</delete>
+
+
+</mapper>
+ 
+

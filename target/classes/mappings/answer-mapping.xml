@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="AnswerDAO">
+
+	<resultMap id="AnswerList" type="answer">
+		<id property = "seq" column="SWQ"/>
+		<result property = "content" column="CONTENT"/>
+		<result property = "writer" column="WRITER"/>
+		<result property = "boardSeq" column="BOARDSEQ"/>
+		<result property = "answerRegDate" column="ANSWEREREGDATE"/>
+	</resultMap>
+	
+
+	
+	<select id="getAnswer" resultType="answer">
+		<![CDATA[
+		SELECT * FROM users where id =#{id} and password = #{password}
+		]]>
+	</select>
+	
+	
+	<select id="getAnswerList"  resultMap="AnswerList" >
+		SELECT * FROM ANSWER
+		WHERE BOARDSEQ = #{seq}
+		order by seq desc
+	</select>	
+	
+	<insert id="insertAnswer">
+		     INSERT INTO ANSWER(CONTENT,WRITER,BOARDSEQ,SEQ)
+		     VALUES(#{content},#{writer},#{boardSeq},(select nvl(max(seq),0)+1 from answer))
+	</insert>
+
+
+	<update id="updateUser" >
+		UPDATE USERS SET ID=#{id},PASSWORD=#{password},NICKNAME = #{nickName} where ID=#{id}
+	</update>
+	
+	<update id="updateUserPoint" >
+		UPDATE USERS SET POINT=(SELECT POINT FROM USERS WHERE ID=#{id})+5 WHERE ID=#{id}
+	</update>
+
+	<delete id="deleteUser" >
+		delete users where id = #{id}
+	</delete>
+
+
+</mapper>
+ 
+
